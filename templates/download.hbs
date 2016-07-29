@@ -1,0 +1,39 @@
+{{> header }}
+
+<body>
+  <div class="container">
+    <h1>Video backup</h1>
+
+    <h4><a href="/">1. Select video</a>&nbsp;&nbsp;2. Download video</h4>
+
+    <div class="panel panel-default">
+      <div class="panel-heading"><h4>{{title}}</h4></div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-4 result-image-col">
+            <img src="{{thumbnail}}" alt="thumbnail" />
+          </div>
+          <div class="col-sm-8">
+            <div><a href="{{download_url}}"
+                    class="result-download-btn btn btn-primary"
+                    download>Download video</a></div>
+            <div>
+              <b>Filename:</b> {{download_url}}
+            <div>
+              <b>Original URL:</b> <a target="_blank" href="{{url}}">{{url}}</a>
+            </div>
+            <div>
+              <b>Description:</b> {{description}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 
+  {{result}}
+  -->
+</body>
+
+{{> footer }}

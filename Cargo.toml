@@ -1,0 +1,20 @@
+[package]
+
+name = "video-backup"
+description = "A web application that uses youtube-dl for making personal backups of videos"
+version = "0.0.1"
+authors = [ "Ilari Nummila <ilarinum@gmail.com>" ]
+publish = false
+
+[dependencies]
+
+iron = "0.4"
+staticfile = "*"
+router = "*"
+mount = "*"
+handlebars = "*"
+rustc-serialize = "0.3"
+
+[dependencies.url]
+
+git = "https://github.com/servo/rust-url"
