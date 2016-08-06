@@ -1,5 +1,5 @@
-tmp/*
-/target/
-/build/
-.DS_Store
-.cargo
+.idea
+node_modules
+public
+target
+tmp

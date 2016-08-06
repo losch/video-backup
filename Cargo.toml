@@ -2,7 +2,7 @@
 
 name = "video-backup"
 description = "A web application that uses youtube-dl for making personal backups of videos"
-version = "0.0.1"
+version = "0.0.2"
 authors = [ "Ilari Nummila <ilarinum@gmail.com>" ]
 publish = false
 

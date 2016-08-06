@@ -1,0 +1,29 @@
+.accordion-toggle:not(.collapsed):before {
+    content: "▾ ";
+    margin-right: 0;
+    text-decoration: none;
+    color: black;
+}
+
+.accordion-toggle.collapsed:before {
+    content: "▸ ";
+    margin-right: 0;
+    text-decoration: none;
+    color: black;
+}
+
+.downloadview--input {
+    width: 300px;
+}
+
+.videoformats--accordion-toggle {
+    display: inline-block;
+    margin: 10px 0;
+}
+
+.videoformats--accordion-toggle:not(:hover),
+.videoformats--accordion-toggle:active:not(:hover),
+.videoformats--accordion-toggle:focus:not(:hover) {
+    color: black;
+    text-decoration: none;
+}
