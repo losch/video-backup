@@ -130,7 +130,7 @@ pub fn download_handler(req: &mut Request) -> IronResult<Response> {
  * opening it.
  */
 pub fn download_file_handler(req: &mut Request) -> IronResult<Response> {
-    let static_file_handler = Static::new(Path::new(""));
+    let static_file_handler = Static::new(Path::new("tmp/"));
 
     match static_file_handler.handle(req) {
         Ok(mut response) => {

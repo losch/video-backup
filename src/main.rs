@@ -23,8 +23,8 @@ fn main() {
     let mut mount = Mount::new();
     mount
         .mount("/", router)
-        .mount("/static/", Static::new(Path::new("")))
-        .mount("/tmp/", download::download_file_handler);
+        .mount("/tmp/", download::download_file_handler)
+        .mount("/static/", Static::new(Path::new("public/static/")));
 
     Iron::new(mount).http("0.0.0.0:3000")
                     .unwrap();

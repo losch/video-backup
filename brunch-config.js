@@ -8,18 +8,18 @@ module.exports = {
     },
     files: {
         javascripts: {
-            joinTo: 'app.js'
+            joinTo: 'static/app.js'
         },
         stylesheets: {
           joinTo: {
-            'main.css': /^app/,
-            'vendor.css': /^node_modules/
+            'static/main.css': /^app/,
+            'static/vendor.css': /^node_modules/
           }
         }
     },
     modules: {
       autoRequire: {
-        'app.js': ['app']
+        'static/app.js': ['app']
       }
 	}
 };

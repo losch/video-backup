@@ -30,16 +30,6 @@ Url.prototype.startsWith = function(parts) {
   return false;
 };
 
-Url.prototype.is = function(parts) {
-  for (var i = 0; i < parts.length; i++) {
-    var part = parts[i];
-    if (this.url == part) {
-      return true;
-    }
-  }
-  return false;
-};
-
 var server = http.createServer(function(req, res) {
   var url = new Url(req.url);
 

@@ -26,13 +26,10 @@ pub fn handler(_: &mut Request) -> IronResult<Response> {
     let mut handlebars = Handlebars::new();
 
     handlebars.register_template_file(
-      "header", &Path::new("templates/header.hbs")).ok().unwrap();
-    handlebars.register_template_file(
-      "footer", &Path::new("templates/footer.hbs")).ok().unwrap();
-    handlebars.register_template_file(
-      "template", &Path::new("templates/index.hbs")).ok().unwrap();
+      "template", &Path::new("public/index.html")).ok().unwrap();
 
     let data = IndexData {};
+
     if let Ok(contents) = handlebars.render("template", &data) {
       Ok(Response::with((content_type, status::Ok, contents)))
     }

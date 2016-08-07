@@ -7,22 +7,40 @@ youtube-dl application.
 Requirements
 ============
 
-* youtube-dl
-* Rust compiler
-* NodeJS and npm
+* youtube-dl (https://rg3.github.io/youtube-dl/)
+* Rust compiler (https://www.rust-lang.org/)
+* NodeJS and npm (https://nodejs.org/)
 
 Building and running
 ====================
 
-1. Build frontend
+1. Install dependencies
+```npm install```
+
+2. Build frontend
 ```npm run build```
 
-2. Build backend and run it
-```cargo build && cargo run```
+3. Then build backend and run it
+```cargo run```
+
+4. Video backup server starts in http://localhost:3000
 
 Development
 ===========
 
-Build and start backend with: ```cargo build && cargo run```
-Start proxy: ```node proxy.js```
-Start brunch in watch mode: ```npm start```
+Open three terminal windows and run the following commands:
+
+**Terminal #1** Build and start backend with: ```cargo run```
+**Terminal #2** Start proxy server: ```node proxy.js```
+**Terminal #3** Start brunch in watch mode: ```npm start```
+
+Open browser to http://localhost:3333
+
+Directory structure
+===================
+
+app - Frontend code
+app/assets - Asset files that are just copied under /public directory
+src - Backend code
+public - Brunch build frontend code here. Do not modify this directory's contents manually.
+typings - TypeScript typings
