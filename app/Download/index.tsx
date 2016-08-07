@@ -9,7 +9,7 @@ import * as filesize from 'filesize';
 export class DownloadViewState {
   @observable url = '';
   @observable info = null;
-  @observable isLoading = false;
+  @observable loadingMessage = null;
 
   constructor() {}
 
@@ -21,15 +21,11 @@ export class DownloadViewState {
   @action
   fetchInfo() {
     this.info = null;
-    this.isLoading = true;
-
-    console.log('Fetching info', this.url);
+    this.loadingMessage = 'Fetching info...';
 
     fetch("/api/info?url=" + encodeURIComponent(this.url))
       .then((response) => {
-        console.log("Request completed");
-
-        this.isLoading = false;
+        this.loadingMessage = null;
 
         response.json()
                 .then((json) => {
@@ -41,10 +37,7 @@ export class DownloadViewState {
 
   @action
   download(format?: string) {
-    this.info = null;
-    this.isLoading = true;
-
-    console.log('Preparing download', this.url);
+    this.loadingMessage = 'Preparing download...';
 
     let requestUrl = "/api/download?url=" + encodeURIComponent(this.url);
     if (format) {
@@ -53,9 +46,7 @@ export class DownloadViewState {
 
     fetch(requestUrl)
       .then((response) => {
-        console.log("Request completed");
-
-        this.isLoading = false;
+        this.loadingMessage = null;
 
         response.text()
           .then((download_url) => {
@@ -136,7 +127,7 @@ class DownloadView extends Component<{appState: DownloadViewState}, {}> {
   }
 
   render() {
-    const { info, isLoading } = this.props.appState;
+    const { info, loadingMessage } = this.props.appState;
 
     return (
       <div className="container">
@@ -154,7 +145,7 @@ class DownloadView extends Component<{appState: DownloadViewState}, {}> {
                        value={this.props.appState.url} />
               </div>
               {
-                this.props.appState.isLoading ?
+                this.props.appState.loadingMessage ?
                   <button type="submit"
                           className="btn btn-default"
                           disabled>Submit</button> :
@@ -165,22 +156,25 @@ class DownloadView extends Component<{appState: DownloadViewState}, {}> {
           </div>
         </div>
         {
-          isLoading ?
-            <div className="sk-cube-grid">
-              <div className="sk-cube sk-cube1"></div>
-              <div className="sk-cube sk-cube2"></div>
-              <div className="sk-cube sk-cube3"></div>
-              <div className="sk-cube sk-cube4"></div>
-              <div className="sk-cube sk-cube5"></div>
-              <div className="sk-cube sk-cube6"></div>
-              <div className="sk-cube sk-cube7"></div>
-              <div className="sk-cube sk-cube8"></div>
-              <div className="sk-cube sk-cube9"></div>
+          loadingMessage ?
+            <div>
+              <div className="sk-cube-grid">
+                <div className="sk-cube sk-cube1"></div>
+                <div className="sk-cube sk-cube2"></div>
+                <div className="sk-cube sk-cube3"></div>
+                <div className="sk-cube sk-cube4"></div>
+                <div className="sk-cube sk-cube5"></div>
+                <div className="sk-cube sk-cube6"></div>
+                <div className="sk-cube sk-cube7"></div>
+                <div className="sk-cube sk-cube8"></div>
+                <div className="sk-cube sk-cube9"></div>
+              </div>
+              <div className="sk-cube-text">{loadingMessage}</div>
             </div> :
             null
         }
         {
-          info ?
+          !loadingMessage && info ?
             <div className="row">
               <div className="col-xs-12">
                 <h4>{ info.title }</h4>
