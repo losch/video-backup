@@ -5,6 +5,7 @@ import {observer} from 'mobx-react';
 require('es6-promise').polyfill();
 require('isomorphic-fetch');
 import * as filesize from 'filesize';
+import * as ClassNames from 'classnames';
 
 export class DownloadViewState {
   @observable url = '';
@@ -57,7 +58,8 @@ export class DownloadViewState {
   }
 }
 
-class VideoFormats extends Component<{formats: any, download: any}, {}> {
+class VideoFormats extends Component<
+  {formats: any, download: any, isCollapsed: boolean}, {}> {
   download(e, format) {
     e.preventDefault();
     this.props.download(format);
@@ -65,14 +67,8 @@ class VideoFormats extends Component<{formats: any, download: any}, {}> {
 
   render() {
     return (
-      <div>
-        <a href="#moreformats"
-           className="videoformats--accordion-toggle accordion-toggle collapsed"
-           data-toggle="collapse"
-           aria-expanded="false"
-           aria-controls="moreformats">See other formats</a>
-
-        <div id="moreformats" className="collapse">
+      <div style={{display: this.props.isCollapsed ? 'none' : 'block'}}>
+        <div>
           <table className="table table-striped">
             <thead>
               <tr>
@@ -96,7 +92,7 @@ class VideoFormats extends Component<{formats: any, download: any}, {}> {
                          '' :
                          filesize(format.filesize)}</td>
                   <td><a href="#"
-                         className="btn btn-primary"
+                         className="button is-primary"
                          onClick={(e) =>
                           this.download(e, format.format_id)}>Download</a></td>
                 </tr>
@@ -111,7 +107,15 @@ class VideoFormats extends Component<{formats: any, download: any}, {}> {
 }
 
 @observer
-class DownloadView extends Component<{appState: DownloadViewState}, {}> {
+class DownloadView extends Component<{appState: DownloadViewState},
+                                     {isMoreCollapsed: boolean}> {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isMoreCollapsed: true
+    };
+  }
+
   submit(e) {
     e.preventDefault();
     this.props.appState.fetchInfo();
@@ -126,73 +130,103 @@ class DownloadView extends Component<{appState: DownloadViewState}, {}> {
     this.props.appState.download();
   }
 
+  toggleMoreFormats(e) {
+    this.setState({isMoreCollapsed: !this.state.isMoreCollapsed});
+    e.preventDefault();
+  }
+
   render() {
     const { info, loadingMessage } = this.props.appState;
 
-    return (
-      <div className="container">
-        <div className="row">
-          <h1>Video backup</h1>
-          <div className="col-xs-12">
-            <form onSubmit={(e) => this.submit(e)}>
-              <div className="form-group">
-                <label>Url:</label>
-                <input type="text"
-                       className="form-control"
-                       placeholder="Url"
-                       name="url"
-                       onChange={(e) => this.onChange(e)}
-                       value={this.props.appState.url} />
-              </div>
-              {
-                this.props.appState.loadingMessage ?
-                  <button type="submit"
-                          className="btn btn-default"
-                          disabled>Submit</button> :
-                  <button type="submit"
-                          className="btn btn-default">Submit</button>
-              }
-            </form>
-          </div>
-        </div>
-        {
-          loadingMessage ?
-            <div>
-              <div className="sk-cube-grid">
-                <div className="sk-cube sk-cube1"></div>
-                <div className="sk-cube sk-cube2"></div>
-                <div className="sk-cube sk-cube3"></div>
-                <div className="sk-cube sk-cube4"></div>
-                <div className="sk-cube sk-cube5"></div>
-                <div className="sk-cube sk-cube6"></div>
-                <div className="sk-cube sk-cube7"></div>
-                <div className="sk-cube sk-cube8"></div>
-                <div className="sk-cube sk-cube9"></div>
-              </div>
-              <div className="sk-cube-text">{loadingMessage}</div>
-            </div> :
-            null
-        }
-        {
-          !loadingMessage && info ?
-            <div className="row">
-              <div className="col-xs-12">
-                <h4>{ info.title }</h4>
+    let moreButtonClassNames = ClassNames(
+      'download-view--button button is-link accordion-toggle',
+      { 'collapsed': this.state.isMoreCollapsed }
+    );
 
-                <p><b>Description:</b> {info.description}</p>
-                <p><b>Original URL:</b> <a
-                  target="_blank"
-                  href={info.webpage_url}>{info.webpage_url}</a></p>
-                <a href="#"
-                   onClick={(e) => this.download(e) }
-                   className="btn btn-primary">Download (best quality)</a>
-                <VideoFormats formats={info.formats}
-                              download={(format) =>
-                                this.props.appState.download(format)} />
+    return (
+      <div>
+        <header className="header">
+          <div className="container">
+            <div className="columns">
+              <div className="column">
+                <h1 className="title">Video backup</h1>
               </div>
-            </div> :
-            null
-        }
+            </div>
+          </div>
+        </header>
+        <section className="section">
+          <div className="container">
+            <div className="content">
+              <form onSubmit={(e) => this.submit(e)}>
+                <label className="label">Url:</label>
+                <p className="control">
+                  <input type="text"
+                         className="input"
+                         placeholder="Url"
+                         name="url"
+                         onChange={(e) => this.onChange(e)}
+                         value={this.props.appState.url} />
+                </p>
+                <p className="control">
+                  {
+                    loadingMessage ?
+                      <button type="submit"
+                              className="button is-primary"
+                              disabled>Fetch info</button> :
+                      <button type="submit"
+                              className="button is-primary">Fetch info</button>
+                  }
+                </p>
+              </form>
+            </div>
+            {
+              loadingMessage ?
+                <div>
+                  <div className="sk-cube-grid">
+                    <div className="sk-cube sk-cube1"></div>
+                    <div className="sk-cube sk-cube2"></div>
+                    <div className="sk-cube sk-cube3"></div>
+                    <div className="sk-cube sk-cube4"></div>
+                    <div className="sk-cube sk-cube5"></div>
+                    <div className="sk-cube sk-cube6"></div>
+                    <div className="sk-cube sk-cube7"></div>
+                    <div className="sk-cube sk-cube8"></div>
+                    <div className="sk-cube sk-cube9"></div>
+                  </div>
+                  <div className="sk-cube-text">{loadingMessage}</div>
+                </div> :
+                null
+            }
+            {
+              !loadingMessage && info ?
+                <div className="content">
+                  <div className="box">
+                  <h4>{ info.title }</h4>
+
+                  <p><b>Description:</b> {info.description}</p>
+                  <p><b>Original URL:</b> <a
+                    target="_blank"
+                    href={info.webpage_url}>{info.webpage_url}</a></p>
+                  <p className="control">
+                    <button
+                       onClick={(e) => this.download(e) }
+                       className="download-view--button button is-primary">
+                        Download (best quality)</button>
+                    <button
+                      className={moreButtonClassNames}
+                      onClick={(e) => this.toggleMoreFormats(e)}>
+                      See other formats
+                    </button>
+                  </p>
+                  <VideoFormats isCollapsed={this.state.isMoreCollapsed}
+                                formats={info.formats}
+                                download={(format) =>
+                                  this.props.appState.download(format)} />
+                </div></div> :
+                null
+            }
+          </div>
+        </section>
       </div>
     );
   }

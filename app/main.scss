@@ -1,0 +1,35 @@
+@import "../node_modules/bulma/bulma";
+
+.header {
+  background-color: #1fc8db;
+
+  & .title {
+    color: white;
+    font-weight: bold;
+  }
+
+  padding: 20px 0;
+}
+
+.button.accordion-toggle:not(.collapsed):before {
+  content: "▾\00a0";
+  margin-right: 0;
+  text-decoration: none;
+  color: black;
+}
+
+.button.accordion-toggle.collapsed:before {
+  content: "▸\00a0";
+  margin-right: 0;
+  text-decoration: none;
+  color: black;
+}
+
+.download-view--button + .download-view--button {
+  margin-left: 6px;
+}
+
+.sk-cube-text {
+  margin-top: -30px;
+  text-align: center;
+}
