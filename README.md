@@ -4,6 +4,8 @@ Video backup
 A web application written in Rust that helps making personal backups of videos
 with youtube-dl application.
 
+![Screenshot](./screenshots/screenshot.png?raw=true)
+
 Requirements
 ============
 
