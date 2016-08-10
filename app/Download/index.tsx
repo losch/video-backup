@@ -1,114 +1,16 @@
 import * as React from 'react';
 import {Component} from 'react';
-import {observable, action} from 'mobx';
 import {observer} from 'mobx-react';
-require('es6-promise').polyfill();
-require('isomorphic-fetch');
-import * as filesize from 'filesize';
 import * as ClassNames from 'classnames';
 
-export class DownloadViewState {
-  @observable url = '';
-  @observable info = null;
-  @observable loadingMessage = null;
+import { DownloadViewState } from './state';
+import VideoFormats from './VideoFormats';
 
-  constructor() {}
-
-  @action
-  changeUrl(newUrl) {
-    this.url = newUrl;
-  }
-
-  @action
-  fetchInfo() {
-    this.info = null;
-    this.loadingMessage = 'Fetching info...';
-
-    fetch("/api/info?url=" + encodeURIComponent(this.url))
-      .then((response) => {
-        this.loadingMessage = null;
-
-        response.json()
-                .then((json) => {
-                  console.log('Got response', json);
-                  this.info = json;
-                })
-      });
-  }
-
-  @action
-  download(format?: string) {
-    this.loadingMessage = 'Preparing download...';
-
-    let requestUrl = "/api/download?url=" + encodeURIComponent(this.url);
-    if (format) {
-      requestUrl += '&format=' + format;
-    }
-
-    fetch(requestUrl)
-      .then((response) => {
-        this.loadingMessage = null;
-
-        response.text()
-          .then((download_url) => {
-            console.log('Got response', download_url);
-            window.location.assign(download_url);
-          })
-      });
-  }
-}
-
-class VideoFormats extends Component<
-  {formats: any, download: any, isCollapsed: boolean}, {}> {
-  download(e, format) {
-    e.preventDefault();
-    this.props.download(format);
-  }
-
-  render() {
-    return (
-      <div style={{display: this.props.isCollapsed ? 'none' : 'block'}}>
-        <div>
-          <table className="table table-striped">
-            <thead>
-              <tr>
-                <th>Format</th>
-                <th>Extension</th>
-                <th>Video codec</th>
-                <th>Audio codec</th>
-                <th>Filesize</th>
-                <th />
-              </tr>
-            </thead>
-            <tbody>
-            {
-              this.props.formats.map((format, i) =>
-                <tr key={'format-' + i}>
-                  <td>{format.format}</td>
-                  <td>{format.ext}</td>
-                  <td>{format.vcodec}</td>
-                  <td>{format.acodec}</td>
-                  <td>{isNaN(format.filesize) ?
-                         '' :
-                         filesize(format.filesize)}</td>
-                  <td><a href="#"
-                         className="button is-primary"
-                         onClick={(e) =>
-                          this.download(e, format.format_id)}>Download</a></td>
-                </tr>
-              )
-            }
-            </tbody>
-          </table>
-        </div>
-      </div>
-    );
-  }
-}
+export * from './state';
 
 @observer
-class DownloadView extends Component<{appState: DownloadViewState},
-                                     {isMoreCollapsed: boolean}> {
+export class DownloadView extends Component<{appState: DownloadViewState},
+                                            {isMoreCollapsed: boolean}> {
   constructor(props) {
     super(props);
     this.state = {
@@ -225,5 +127,3 @@ class DownloadView extends Component<{appState: DownloadViewState},
     );
   }
 }
-
-export default DownloadView;

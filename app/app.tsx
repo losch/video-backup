@@ -3,7 +3,11 @@ import {Component} from 'react';
 import * as ReactDOM from 'react-dom';
 import {Router, Route, browserHistory} from 'react-router';
 
-import DownloadView, { DownloadViewState } from './Download';
+// Add polyfill for fetch functionality
+require('es6-promise').polyfill();
+require('isomorphic-fetch');
+
+import { DownloadView, DownloadViewState } from './Download';
 
 let appState = {
   downloadView: new DownloadViewState()
