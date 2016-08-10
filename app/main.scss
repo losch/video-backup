@@ -8,10 +8,11 @@
     font-weight: bold;
   }
 
-  padding: 20px 0;
+  padding: 20px 20px 25px 20px;
 }
 
 .button.accordion-toggle:not(.collapsed):before {
+  display: inline-block;
   content: "▾\00a0";
   margin-right: 0;
   text-decoration: none;
@@ -19,6 +20,7 @@
 }
 
 .button.accordion-toggle.collapsed:before {
+  display: inline-block;
   content: "▸\00a0";
   margin-right: 0;
   text-decoration: none;
@@ -26,6 +28,7 @@
 }
 
 .download-view--button + .download-view--button {
+  display: inline-block;
   margin-left: 6px;
 }
 

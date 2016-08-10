@@ -147,11 +147,7 @@ class DownloadView extends Component<{appState: DownloadViewState},
       <div>
         <header className="header">
           <div className="container">
-            <div className="columns">
-              <div className="column">
-                <h1 className="title">Video backup</h1>
-              </div>
-            </div>
+            <h1 className="title">Video backup</h1>
           </div>
         </header>
         <section className="section">
@@ -212,11 +208,9 @@ class DownloadView extends Component<{appState: DownloadViewState},
                        onClick={(e) => this.download(e) }
                        className="download-view--button button is-primary">
                         Download (best quality)</button>
-                    <button
-                      className={moreButtonClassNames}
-                      onClick={(e) => this.toggleMoreFormats(e)}>
-                      See other formats
-                    </button>
+                    <button className={moreButtonClassNames}
+                            onClick={(e) => this.toggleMoreFormats(e)}
+                      >Other formats...</button>
                   </p>
                   <VideoFormats isCollapsed={this.state.isMoreCollapsed}
                                 formats={info.formats}
