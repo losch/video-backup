@@ -37,6 +37,26 @@ export class DownloadView extends Component<{appState: DownloadViewState},
     e.preventDefault();
   }
 
+  createThumbnailUrl(maxres) {
+    return maxres.replace('maxresdefault.jpg',
+                          'hqdefault.jpg?custom=true&w=196&h=110');
+  }
+
+  /*
+   * Formats duration from seconds to HH:mm:ss
+   */
+  formatDuration(duration: number): String {
+    var hours   = Math.floor(duration / 3600);
+    var minutes = Math.floor((duration - (hours * 3600)) / 60);
+    var seconds = duration - (hours * 3600) - (minutes * 60);
+
+    if (hours < 10) { hours   = "0" + hours; }
+    if (minutes < 10) { minutes = "0" + minutes; }
+    if (seconds < 10) { seconds = "0" + seconds; }
+
+    return hours + ':' + minutes + ':' + seconds;
+  }
+
   render() {
     const { info, loadingMessage } = this.props.appState;
 
@@ -99,26 +119,34 @@ export class DownloadView extends Component<{appState: DownloadViewState},
               !loadingMessage && info ?
                 <div className="content">
                   <div className="box">
-                  <h4>{ info.title }</h4>
-
-                  <p><b>Description:</b> {info.description}</p>
-                  <p><b>Original URL:</b> <a
-                    target="_blank"
-                    href={info.webpage_url}>{info.webpage_url}</a></p>
-                  <p className="control">
-                    <button
-                       onClick={(e) => this.download(e) }
-                       className="download-view--button button is-primary">
-                        Download (best quality)</button>
-                    <button className={moreButtonClassNames}
-                            onClick={(e) => this.toggleMoreFormats(e)}
-                      >Other formats...</button>
-                  </p>
-                  <VideoFormats isCollapsed={this.state.isMoreCollapsed}
-                                formats={info.formats}
-                                download={(format) =>
-                                  this.props.appState.download(format)} />
-                </div></div> :
+                    <div className="columns">
+                      <div className="column is-one-third">
+                        <img src={ this.createThumbnailUrl(info.thumbnail) } />
+                      </div>
+                      <div className="column">
+                        <h2>{ info.title }</h2>
+                        <h4>{ this.formatDuration(info.duration) }</h4>
+                        <p><b>Description:</b> {info.description}</p>
+                        <p><b>Original URL:</b> <a
+                          target="_blank"
+                          href={info.webpage_url}>{info.webpage_url}</a></p>
+                      </div>
+                    </div>
+                    <p className="control">
+                      <button
+                         onClick={(e) => this.download(e) }
+                         className="download-view--button button is-primary">
+                          Download (best quality)</button>
+                      <button className={moreButtonClassNames}
+                              onClick={(e) => this.toggleMoreFormats(e)}
+                        >Other formats...</button>
+                    </p>
+                    <VideoFormats isCollapsed={this.state.isMoreCollapsed}
+                                  formats={info.formats}
+                                  download={(format) =>
+                                    this.props.appState.download(format)} />
+                  </div>
+                </div> :
                 null
             }
           </div>

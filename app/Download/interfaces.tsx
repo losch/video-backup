@@ -28,6 +28,12 @@ export interface VideoInfo {
   // Link to the original URL
   webpage_url: string,
 
+  // Duration of the video in seconds
+  duration: number,
+
+  // Thumbnail image's URL
+  thumbnail: string,
+
   // Available formats
   formats: Array<VideoFormat>
 }
