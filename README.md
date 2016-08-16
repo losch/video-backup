@@ -18,18 +18,9 @@ Requirements
 Building and running
 ====================
 
-1. Install dependencies
-
-```npm install```
-
-2. Build frontend
-
-```npm run build```
-
-3. Then build backend and run it
-
-```cargo run```
-
+1. Install dependencies: ```npm install```
+2. Build frontend: ```npm run build```
+3. Then build backend and run it: ```cargo run```
 4. Video backup server starts in http://localhost:3000
 
 Development
